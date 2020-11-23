@@ -28,7 +28,7 @@ catkin make
 
 now you are ready to use the code.
 
-### Usage 
+# Usage 
 It is possible to record data from multiple camera running
 
 ```bat
