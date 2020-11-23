@@ -1,0 +1,14 @@
+<launch>
+  <arg name="recording_name"         default="recordin_node_A" />
+  <arg name="recording_path"         default="/home/andrea/share/workspaces/index_ws/src/data" />
+  <arg name="left_rgb_camera_topic"         default="/zedB/zed_node_A/left_raw/image_raw_color" />
+  <arg name="right_rgb_camera_topic"         default="/zedB/zed_node_A/right_raw/image_raw_color" />
+  <arg name="depth_camera_topic"         default="/zedB/zed_node_A/depth/depth_registered" />
+  
+  <node pkg="zed2_recording" type="recording_node.py" name="$(arg recording_name)" output="screen">
+      <param name="recording_path" value="$(arg recording_path)"/>
+      <remap from="/left_rgb_camera" to="$(arg left_rgb_camera_topic)"/>
+      <remap from="/right_rgb_camera" to="$(arg right_rgb_camera_topic)"/>
+      <remap from="/depth_camera" to="$(arg depth_camera_topic)"/>
+  </node>
+</launch>

@@ -1,0 +1,38 @@
+<launch>
+    <arg name="node_name"                        default="recording_node"/>
+    <arg name="experiment_name"                  default="test"/>
+
+    <!-- CAMERA 1 -->
+    <arg name="recording_name_A"                 default="camera_A" />
+    <arg name="recording_path_A"                 default="/home/andrea/share/workspaces/index_ws/src/data/$(arg experiment_name)/$(arg recording_name_A)" />
+    <arg name="left_rgb_camera_topic_A"          default="/zedB/zed_node_B/left_raw/image_raw_color" />
+    <arg name="right_rgb_camera_topic_A"         default="/zedB/zed_node_B/right_raw/image_raw_color" />
+    <arg name="depth_camera_topic_A"             default="/zedB/zed_node_B/depth/depth_registered" />
+
+   <group ns="$(arg recording_name_A)">
+        <include file="$(find zed2_recording)/launch/recording.launch">
+            <arg name="recording_name"                value="$(arg node_name)" />
+            <arg name="recording_path"                value="$(arg recording_path_A)" />
+            <arg name="left_rgb_camera_topic"         value="$(arg left_rgb_camera_topic_A)" />
+            <arg name="right_rgb_camera_topic"        value="$(arg right_rgb_camera_topic_A)" />
+            <arg name="depth_camera_topic"            value="$(arg depth_camera_topic_A)" />
+        </include>
+    </group>
+
+    <!-- CAMERA 2 -->
+    <arg name="recording_name_B"                 default="camera_B" />
+    <arg name="recording_path_B"                 default="/home/andrea/share/workspaces/index_ws/src/data/$(arg experiment_name)/$(arg recording_name_B)" />
+    <arg name="left_rgb_camera_topic_B"          default="/zedB/zed_node_B/left_raw/image_raw_color" />
+    <arg name="right_rgb_camera_topic_B"         default="/zedB/zed_node_B/right_raw/image_raw_color" />
+    <arg name="depth_camera_topic_B"             default="/zedB/zed_node_B/depth/depth_registered" />
+
+   <group ns="$(arg recording_name_B)">
+        <include file="$(find zed2_recording)/launch/recording.launch">
+            <arg name="recording_name"                value="$(arg node_name)" />
+            <arg name="recording_path"                value="$(arg recording_path_B)" />
+            <arg name="left_rgb_camera_topic"         value="$(arg left_rgb_camera_topic_B)" />
+            <arg name="right_rgb_camera_topic"        value="$(arg right_rgb_camera_topic_B)" />
+            <arg name="depth_camera_topic"            value="$(arg depth_camera_topic_B)" />
+        </include>
+    </group>
+</launch>
