@@ -1,14 +1,39 @@
 <launch>
-  <arg name="recording_name"         default="recordin_node_A" />
-  <arg name="recording_path"         default="/home/andrea/share/workspaces/index_ws/src/data" />
-  <arg name="left_rgb_camera_topic"         default="/zedB/zed_node_A/left_raw/image_raw_color" />
-  <arg name="right_rgb_camera_topic"         default="/zedB/zed_node_A/right_raw/image_raw_color" />
-  <arg name="depth_camera_topic"         default="/zedB/zed_node_A/depth/depth_registered" />
+  <arg name="node_name"                      default="rgb_record_node" />
+  <arg name="device_name"		     default="camera" />
+  <arg name="data_name"		             default="RGB" />
+  <arg name="experiment_name"		     default="test" />
+  <arg name="recording_path"                 default="$(find zed2_recording)/data/$(arg experiment_name)/$(arg device_name)/" />
+  <arg name="camera_topic"                   default="/kinect2/hd/image_depth_rect" />
+  <arg name="camera_info_topic"              default="/kinect2/hd/camera_info" />
+  <arg name="camera_info_record"             default="False" />
+  <arg name="rescaling"			     default="False" />
+  <arg name="rescaling_param_max"            default=" " />
+  <arg name="rescaling_param_min"            default=" " />
+
+
+  <arg name="right_rgb_camera_topic"         default="/zedA/zed_node_A/right_raw/image_raw_color" />
+  <arg name="depth_camera_topic"             default="/zedA/zed_node_A/depth/depth_registered" />
+  <arg name="max_depth"                      default="/zedA/zed_node_A/depth/max_depth" />  	
+  <arg name="min_depth"                      default="/zedA/zed_node_A/depth/min_depth" />	
+	
+
   
-  <node pkg="zed2_recording" type="recording_node.py" name="$(arg recording_name)" output="screen">
-      <param name="recording_path" value="$(arg recording_path)"/>
-      <remap from="/left_rgb_camera" to="$(arg left_rgb_camera_topic)"/>
-      <remap from="/right_rgb_camera" to="$(arg right_rgb_camera_topic)"/>
-      <remap from="/depth_camera" to="$(arg depth_camera_topic)"/>
+  <node pkg="zed2_recording" type="recording_node.py" name="$(arg node_name)" output="screen">
+      <param name="recording_path" 	           value="$(arg recording_path)/$(arg data_name)/"/>
+      <param name="rescaling" 		           value="$(arg rescaling)"/>
+      <param name="rescaling_param_max" 	   value="$(arg rescaling_param_max)"/>
+      <param name="rescaling_param_min" 	   value="$(arg rescaling_param_min)"/>
+
+      <remap from="/camera_topic" 	           to="$(arg camera_topic)"/>
   </node>
-</launch>
+
+  <group if="$(eval camera_info_record == True)">
+  <node pkg="zed2_recording" type="camera_info_saver_node.py" name="$(arg device_name)_info" output="screen">
+      <param name="save_path" 	   value="$(arg recording_path)"/>
+
+      <remap from="/camera_info_topic" 	   to="$(arg camera_info_topic)"/>
+  </node>
+  </group>
+
+</launch>	
